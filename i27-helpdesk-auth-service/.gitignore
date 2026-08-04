@@ -53,7 +53,7 @@ bin/
 
 # Environment variables
 .env
-.env.*
+
 !.env.example
 
 # OS generated files
