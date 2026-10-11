@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notification-deployment
+  namespace: madhav
+  labels:
+    app: notification-service
+    env: dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: notification-service
+      env: dev
+  template:
+    metadata:
+      labels:
+        app: notification-service
+        env: dev
+    spec:
+      containers:
+        - name: notificationctn
+          image: devopswithcloudhub/i27helpdesk-notification:v1
+          ports:
+            - containerPort: 8084
+          envFrom:
+            - secretRef:
+                name: notificationsecret
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: 8084
+            initialDelaySeconds: 30
+            periodSeconds: 20
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8084
+            initialDelaySeconds: 30
+            periodSeconds: 30

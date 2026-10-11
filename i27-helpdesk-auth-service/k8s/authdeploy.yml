@@ -1,0 +1,41 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-deployment
+  namespace: madhav
+  labels:
+    app: auth-service
+    env: dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth-service
+      env: dev
+  template:
+    metadata:
+      labels:
+        app: auth-service
+        env: dev
+    spec:
+      containers:
+        - name: authctn
+          image: devopswithcloudhub/i27helpdesk-auth:v1
+          ports:
+            - containerPort: 8081
+          envFrom:
+            - secretRef:
+                name: authsecret
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: 8081
+            initialDelaySeconds: 30   #  initial delay before the first probe is initiated when the container is started
+            periodSeconds: 20          # how often (in seconds) to perform the probe
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8081
+            initialDelaySeconds: 30   #  initial delay before the first probe is initiated when the container is started
+            periodSeconds: 30         # how often (in seconds) to perform the probe

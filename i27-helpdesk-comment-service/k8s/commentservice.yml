@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: comment-service
+  namespace: madhav
+spec:
+  type: ClusterIP
+  selector:
+    app: comment-service
+    env: dev
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8083

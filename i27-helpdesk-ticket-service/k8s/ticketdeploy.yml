@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ticket-deployment
+  namespace: madhav
+  labels:
+    app: ticket-service
+    env: dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ticket-service
+      env: dev
+  template:
+    metadata:
+      labels:
+        app: ticket-service
+        env: dev
+    spec:
+      containers:
+        - name: ticketctn
+          image: devopswithcloudhub/i27helpdesk-ticket:v1
+          ports:
+            - containerPort: 8082
+          envFrom:
+            - secretRef:
+                name: ticketsecret
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: 8082
+            initialDelaySeconds: 30
+            periodSeconds: 20
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8082
+            initialDelaySeconds: 30
+            periodSeconds: 30
