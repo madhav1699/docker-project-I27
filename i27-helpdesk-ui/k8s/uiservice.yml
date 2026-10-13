@@ -4,7 +4,7 @@ metadata:
   name: ui-service
   namespace: madhav
 spec:
-  type: ClusterIP
+  type: LoadBalancer
   selector:
     app: ui
     env: dev

@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: uictn
-          image: devopswithcloudhub/i27helpdesk-ui:v2
+          image: madhav2026/i27helpdesk-ui:v1
           ports:
             - containerPort: 3000
           readinessProbe:
